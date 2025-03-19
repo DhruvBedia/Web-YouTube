@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background: #f8f8f8;
+            border-bottom: 2px solid #ccc;
+        }
+        .header img {
+            height: 80px; /* Increased size */
+        }
+        .search-bar {
+            flex: 1;
+            margin: 0 20px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .extra-sidebar {
+            flex: 0.5;
+            padding: 15px;
+            background: #e0e0e0;
+            height: 100vh;
+            border-right: 2px solid #bbb;
+        }
+        .video-section {
+            flex: 3;
+            padding-left: 20px;
+        }
+        .video-section video {
+            width: 100%;
+            border-radius: 10px;
+        }
+        #mainVideo {
+            width: 1000px;  /* Set custom width */
+            height: 550px; /* Set custom height */
+        }
+        .info {
+            margin-top: 10px;
+        }
+        .actions button {
+            margin-right: 10px;
+            padding: 8px 12px;
+            border: none;
+            background: #ddd;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .sidebar {
+            flex: 1;
+            padding-left: 20px;
+            background: #f8f8f8;
+            padding: 15px;
+            border-left: 2px solid #ccc;
+            height: 100vh;
+        }
+        .sidebar .suggested-video {
+            display: flex;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar .suggested-video:hover {
+            background-color: #e6e6e6;
+        }
+        .sidebar img {
+            width: 100px;
+            height: 60px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        /* Subscriptions Section Styles */
+        .subscriptions {
+            margin-top: 20px;
+        }
+        .subscriptions h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .channel {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .channel img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .channel p {
+            margin: 0;
+        }
+        .channel:hover {
+            background-color: #f1f1f1;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            .extra-sidebar, .sidebar {
+                flex: 1;
+                padding: 10px;
+                margin-bottom: 20px;
+                border: none;
+            }
+            .video-section {
+                padding-left: 0;
+            }
+            #mainVideo {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="youtube.png" alt="YouTube Logo">
+        <div class="search-bar">
+            <input type="text" placeholder="Search..." onkeyup="searchVideos()">
+        </div>
+    </div>
+    <div class="container">
+        <!-- Extra Sidebar containing subscriptions -->
+        <div class="extra-sidebar">
+            <!-- Subscriptions Section -->
+            <div class="subscriptions">
+                <h3>Subscriptions</h3>
+                <div class="channel" onclick="window.location.href='file:///C:/Users/hp/Desktop/Youtube/channel1.html'">
+                    <img src="channel1.jpg" alt="Channel Logo">
+                    <p>Jhulan Bedia</p>
+                </div>
+                <div class="channel" onclick="window.location.href='file:///C:/Users/hp/Desktop/Youtube/channel2.html'">
+                    <img src="channel2.jpg" alt="Channel Logo">
+                    <p>TeeniepingTV</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Video Section -->
+        <div class="video-section">
+            <video id="mainVideo" controls>
+                <source src="" type="video/mp4"> <!-- Empty source initially -->
+                Your browser does not support the video tag.
+            </video>
+            <div class="info">
+                <h2 id="videoTitle">Video Title</h2>
+                <p id="videoDesc">Video description goes here. This is a sample video.</p>
+                <div class="actions">
+                    <button>👍 Like</button>
+                    <button>👎 Dislike</button>
+                    <button>🔄 Share</button>
+                    <button onclick="forceDownload()">⬇️ Download</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suggested Videos Sidebar -->
+        <div class="sidebar">
+            <h3>Videos List:</h3>
+            <div class="suggested-video" onclick="changeVideo('video1.mp4', 'Router Configuration in Cisco Packet Tracer', 'Description for Video 2')">
+                <img src="thumbnail1.png" alt="Thumbnail">
+                <div>
+                    <p>Router Configuration in Cisco Packet Tracer</p>
+                    <p>Jhulan Bedia</p>
+                </div>
+            </div>
+            <div class="suggested-video" onclick="changeVideo('video2.mp4', '2 indoor games', 'Description for Video 3')">
+                <img src="thumbnail2.jpg" alt="Thumbnail">
+                <div>
+                    <p>2 indoor games</p>
+                    <p>Jhulan Bedia</p>
+                </div>
+            </div>
+            <div class="suggested-video" onclick="changeVideo('video3.mp4', 'THE COOKIE MESS💘', '💌Now Every week you will meet new episode about Catch! Teenieping!💌')">
+                <img src="thumbnail3.jpg" alt="Thumbnail">
+                <div>
+                    <p>THE COOKIE MESS💘</p>
+                    <p>TeeniepingTV</p>
+                </div>
+            </div>
+            <div class="suggested-video" onclick="changeVideo('video4.mp4', 'A VERY CHARMING TEENIEPING💘', '💌Now Every week you will meet new episode about Catch! Teenieping!💌')">
+                <img src="thumbnail4.jpg" alt="Thumbnail">
+                <div>
+                    <p>A VERY CHARMING TEENIEPING💘</p>
+                    <p>TeeniepingTV</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Changing Video, Downloading, and Search -->
+    <script>
+        // Change the video based on what the user selects
+        function changeVideo(videoSrc, title, description) {
+            let videoPlayer = document.getElementById("mainVideo");
+            let videoTitle = document.getElementById("videoTitle");
+            let videoDesc = document.getElementById("videoDesc");
+            
+            videoPlayer.src = videoSrc;
+            videoTitle.textContent = title;
+            videoDesc.textContent = description;
+            videoPlayer.play(); // Auto-play new video
+        }
+
+        // Force the download of the current video
+        function forceDownload() {
+            let videoPlayer = document.getElementById("mainVideo");
+            let url = videoPlayer.currentSrc;
+            let fileName = url.split('/').pop();
+
+            let a = document.createElement("a");
+            a.href = url;
+            a.setAttribute("download", fileName);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Search for videos by title
+        function searchVideos() {
+            let searchQuery = document.querySelector('.search-bar input').value.toLowerCase();
+            let videoItems = document.querySelectorAll('.suggested-video');
+            videoItems.forEach(function(item) {
+                let title = item.querySelector('p').textContent.toLowerCase();
+                if (title.includes(searchQuery)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Get the video parameter from the URL and set it for autoplay
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoFile = urlParams.get('video');
+            if (videoFile) {
+                changeVideo(videoFile, "Sample Video", "This is a description of the video.");
+            }
+        }
+    </script>
+</body>
+</html>
